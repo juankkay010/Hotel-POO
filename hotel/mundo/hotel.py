@@ -107,5 +107,3 @@ class Hotel:
         else:
             return False
 
-
-print("x")
