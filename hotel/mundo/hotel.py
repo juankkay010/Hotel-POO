@@ -106,3 +106,6 @@ class Hotel:
                 return True
         else:
             return False
+
+
+print("x")
