@@ -2,6 +2,8 @@ import random
 import datetime
 from typing import Optional
 
+from hotel.mundo.excepciones import ReservaExistente
+
 
 class Usuario:
 
@@ -81,9 +83,9 @@ class Hotel:
         if self.buscar_reserva(cedula) is None:
             reserva = Checkin(cedula, nombre, cantidad_noches, cantidad_personas, self.numero_habitacion)
             self.checkin[cedula] = reserva
-            return True
+
         else:
-            return False
+            raise ReservaExistente(f"Ya existe una reserva con la cédula {cedula}", cedula)
 
     def cancelar_reserva(self, cedula) -> bool:
         if self.buscar_reserva(cedula) is not None:
