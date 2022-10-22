@@ -38,6 +38,7 @@ class MainWindowHotel(QMainWindow):
                 msg_box.setText(err.mensaje)
                 msg_box.setStandardButtons(QMessageBox.Ok)
                 msg_box.exec_()
+        self.dialogo_realizar_reserva.limpiar()
 
 
 class DialogoRealizarReserva(QDialog):
@@ -52,6 +53,12 @@ class DialogoRealizarReserva(QDialog):
         self.le_cantidad_noches.setValidator(QRegExpValidator(QRegExp("\\d{1}"), self.le_cantidad_noches))
         self.le_cantidad_personas.setValidator(QRegExpValidator(QRegExp("\\d{1}"), self.le_cantidad_personas))
 
+    def limpiar(self):
+        self.le_cedula.clear()
+        self.le_nombre.clear()
+        self.le_cantidad_noches.clear()
+        self.le_cantidad_personas.clear()
+
     def accept(self) -> None:
         if self.le_cedula.text() != "" and self.le_cantidad_noches.text() != "" and self.le_cantidad_personas.text() != "" and self.le_nombre.text() != "":
             super(DialogoRealizarReserva, self).accept()
@@ -61,7 +68,6 @@ class DialogoRealizarReserva(QDialog):
             msg_box.setIcon(QMessageBox.Critical)
             msg_box.setText("Debe ingresar todos los campos")
             msg_box.setStandardButtons(QMessageBox.Ok)
-            msg_box.exec_()
 
 
 if __name__ == "__main__":
