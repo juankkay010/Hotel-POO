@@ -20,7 +20,7 @@ class MainWindowHotel(QMainWindow):
 
     def __configurar(self):
         # Enlazar eventos de los botones
-        self.pb_realizar_reserva.clicked.connect(self.abrir_dialogo_realizar_reserva())
+        self.pb_realizar_reserva.clicked.connect(self.abrir_dialogo_realizar_reserva)
 
     def abrir_dialogo_realizar_reserva(self):
         resp = self.dialogo_realizar_reserva.exec_()
@@ -48,9 +48,20 @@ class DialogoRealizarReserva(QDialog):
         self.setFixedSize(self.size())
 
     def __configurar(self):
-        self.le_cedula.setValidator(QRegExpValidator(QRegExp("\\d"), self.le_cedula))
+        self.le_cedula.setValidator(QRegExpValidator(QRegExp("\\d{5}"), self.le_cedula))
         self.le_cantidad_noches.setValidator(QRegExpValidator(QRegExp("\\d{1}"), self.le_cantidad_noches))
         self.le_cantidad_personas.setValidator(QRegExpValidator(QRegExp("\\d{1}"), self.le_cantidad_personas))
+
+    def accept(self) -> None:
+        if self.le_cedula.text() != "" and self.le_cantidad_noches.text() != "" and self.le_cantidad_personas.text() != "" and self.le_nombre.text() != "":
+            super(DialogoRealizarReserva, self).accept()
+        else:
+            msg_box = QMessageBox(self)
+            msg_box.setWindowTitle("Error")
+            msg_box.setIcon(QMessageBox.Critical)
+            msg_box.setText("Debe ingresar todos los campos")
+            msg_box.setStandardButtons(QMessageBox.Ok)
+            msg_box.exec_()
 
 
 if __name__ == "__main__":

@@ -80,10 +80,9 @@ class Hotel:
             return None
 
     def realizar_reserva(self, cedula: str, nombre: str, cantidad_noches: int, cantidad_personas: int):
-        if self.buscar_reserva(cedula) is None:
+        if cedula not in self.checkin.keys():
             reserva = Checkin(cedula, nombre, cantidad_noches, cantidad_personas, self.numero_habitacion)
             self.checkin[cedula] = reserva
-
         else:
             raise ReservaExistente(f"Ya existe una reserva con la cédula {cedula}", cedula)
 
