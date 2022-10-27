@@ -60,7 +60,8 @@ class DialogoRealizarReserva(QDialog):
         self.le_cantidad_personas.clear()
 
     def accept(self) -> None:
-        if self.le_cedula.text() != "" and self.le_cantidad_noches.text() != "" and self.le_cantidad_personas.text() != "" and self.le_nombre.text() != "":
+        if self.le_cedula.text() != "" and self.le_cantidad_noches.text() != "" \
+                and self.le_cantidad_personas.text() != "" and self.le_nombre.text() != "":
             super(DialogoRealizarReserva, self).accept()
         else:
             msg_box = QMessageBox(self)
