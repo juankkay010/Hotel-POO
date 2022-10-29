@@ -69,6 +69,8 @@ class Hotel:
         if self.buscar_usuario(cedula) is None:
             usuario = Usuario(cedula, nombre, fecha_nacimiento, numero_habitacion)
             self.usuario[cedula] = usuario
+        else:
+            raise ObjetoExistente(f"Ya existe un usuario con la cédula {cedula}", cedula)
 
     def buscar_reserva(self, cedula) -> Optional[Checkin]:
         if cedula in self.checkin.keys():

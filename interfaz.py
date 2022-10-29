@@ -114,7 +114,6 @@ class DialogoRegistrarUsuario(QDialog):
         if self.le_cedula.text() != "" and self.le_nombre.text() != "" and self.le_fecha_nacimiento.text() != "" \
                 and self.le_numero_habitacion.text() != "":
             super(DialogoRegistrarUsuario, self).accept()
-
         else:
             msg_box = QMessageBox(self)
             msg_box.setWindowTitle("Error")
