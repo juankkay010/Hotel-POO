@@ -2,7 +2,7 @@ import random
 import datetime
 from typing import Optional
 
-from hotel.mundo.excepciones import ReservaExistente
+from hotel.mundo.excepciones import ObjetoExistente, ObjetoNoEncontrado
 
 
 class Usuario:
@@ -65,13 +65,10 @@ class Hotel:
         else:
             return None
 
-    def registrar_usuario(self, cedula: str, nombre: str, fecha_nacimiento: datetime, numero_habitacion: str) -> bool:
+    def registrar_usuario(self, cedula: str, nombre: str, fecha_nacimiento: datetime, numero_habitacion: str):
         if self.buscar_usuario(cedula) is None:
             usuario = Usuario(cedula, nombre, fecha_nacimiento, numero_habitacion)
             self.usuario[cedula] = usuario
-            return True
-        else:
-            return False
 
     def buscar_reserva(self, cedula) -> Optional[Checkin]:
         if cedula in self.checkin.keys():
@@ -80,18 +77,17 @@ class Hotel:
             return None
 
     def realizar_reserva(self, cedula: str, nombre: str, cantidad_noches: int, cantidad_personas: int):
-        if cedula not in self.checkin.keys():
+        if self.buscar_reserva(cedula) is None:
             reserva = Checkin(cedula, nombre, cantidad_noches, cantidad_personas, self.numero_habitacion)
             self.checkin[cedula] = reserva
         else:
-            raise ReservaExistente(f"Ya existe una reserva con la cédula {cedula}", cedula)
+            raise ObjetoExistente(f"Ya existe una reserva con la cédula {cedula}", cedula)
 
-    def cancelar_reserva(self, cedula) -> bool:
+    def cancelar_reserva(self, cedula):
         if self.buscar_reserva(cedula) is not None:
             del self.checkin[cedula]
-            return True
         else:
-            return False
+            raise ObjetoNoEncontrado(f"No existe una reserva con la cédula {cedula}", cedula)
 
     def buscar_reserva_restaurante(self, cedula) -> Optional[Reserva]:
         if cedula in self.restaurante.keys():
@@ -104,6 +100,7 @@ class Hotel:
             if self.buscar_reserva_restaurante(cedula) is None:
                 reserva_restaurante = Reserva(cedula, cantidad_personas, hora_reserva)
                 self.restaurante[cedula] = reserva_restaurante
-                return True
+            else:
+                raise ObjetoExistente(f"Ya existe una reserva con la cédula {cedula}", cedula)
         else:
-            return False
+            raise ObjetoNoEncontrado(f"No existe una reserva con la cédula {cedula}", cedula)

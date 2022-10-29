@@ -3,10 +3,16 @@ class HotelError(Exception):
         self.mensaje = mensaje
 
 
-class ReservaExistente(HotelError):
+class ObjetoExistente(HotelError):
 
     def __init__(self, mensaje, cedula):
-        super.__init__(mensaje)
+        super().__init__(mensaje)
+        self.cedula = cedula
+
+
+class ObjetoNoEncontrado(HotelError):
+    def __init__(self, mensaje, cedula):
+        super().__init__(mensaje)
         self.cedula = cedula
 
 
