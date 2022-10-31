@@ -5,7 +5,7 @@ from PyQt5.QtGui import QRegExpValidator
 from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
 from PyQt5 import uic
 
-from hotel.mundo.excepciones import ObjetoExistente
+from hotel.mundo.excepciones import ObjetoExistente, ObjetoNoEncontrado
 from hotel.mundo.hotel import Hotel
 
 
@@ -16,6 +16,7 @@ class MainWindowHotel(QMainWindow):
         self.setFixedSize(self.size())
         self.dialogo_realizar_reserva = DialogoRealizarReserva()
         self.dialogo_registrar_usuario = DialogoRegistrarUsuario()
+        self.dialogo_cancelar_reserva = DialogoCancelarReserva()
         self.hotel = Hotel()
         self.__configurar()
 
@@ -23,6 +24,7 @@ class MainWindowHotel(QMainWindow):
         # Enlazar eventos de los botones
         self.pb_realizar_reserva.clicked.connect(self.abrir_dialogo_realizar_reserva)
         self.pb_registrar_usuario.clicked.connect(self.abrir_dialogo_registrar_usuario)
+        self.pb_cancelar_reserva.clicked.connect(self.abrir_dialogo_cancelar_reserva)
 
     def abrir_dialogo_realizar_reserva(self):
         resp = self.dialogo_realizar_reserva.exec_()
@@ -65,6 +67,27 @@ class MainWindowHotel(QMainWindow):
                 msg_box.setStandardButtons(QMessageBox.Ok)
                 msg_box.exec_()
         self.dialogo_registrar_usuario.limpiar()
+
+    def abrir_dialogo_cancelar_reserva(self):
+        resp = self.dialogo_cancelar_reserva.exec_()
+        if resp == QDialog.Accepted:
+            cedula = self.dialogo_cancelar_reserva.le_cedula.text()
+            try:
+                self.hotel.cancelar_reserva(cedula)
+                msg_box = QMessageBox(self)
+                msg_box.setWindowTitle("Reserva cancelada")
+                msg_box.setText(
+                    f"Se ha cancelado la reserva exitosamente")
+                msg_box.setStandardButtons(QMessageBox.Ok)
+                msg_box.exec_()
+            except ObjetoNoEncontrado as err:
+                msg_box = QMessageBox(self)
+                msg_box.setWindowTitle("Error")
+                msg_box.setIcon(QMessageBox.Warning)
+                msg_box.setText(err.mensaje)
+                msg_box.setStandardButtons(QMessageBox.Ok)
+                msg_box.exec_()
+        self.dialogo_cancelar_reserva.limpiar()
 
 
 class DialogoRealizarReserva(QDialog):
@@ -114,6 +137,27 @@ class DialogoRegistrarUsuario(QDialog):
         if self.le_cedula.text() != "" and self.le_nombre.text() != "" and self.le_fecha_nacimiento.text() != "" \
                 and self.le_numero_habitacion.text() != "":
             super(DialogoRegistrarUsuario, self).accept()
+        else:
+            msg_box = QMessageBox(self)
+            msg_box.setWindowTitle("Error")
+            msg_box.setIcon(QMessageBox.Critical)
+            msg_box.setText("Debe ingresar todos los campos")
+            msg_box.setStandardButtons(QMessageBox.Ok)
+            msg_box.exec_()
+
+
+class DialogoCancelarReserva(QDialog):
+    def __init__(self):
+        QDialog.__init__(self)
+        uic.loadUi("gui/CancelarReserva.ui", self)
+        self.setFixedSize(self.size())
+
+    def limpiar(self):
+        self.le_cedula.clear()
+
+    def accept(self) -> None:
+        if self.le_cedula.text() != "":
+            super(DialogoCancelarReserva, self).accept()
         else:
             msg_box = QMessageBox(self)
             msg_box.setWindowTitle("Error")
