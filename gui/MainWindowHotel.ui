@@ -129,7 +129,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_4">
+       <widget class="QPushButton" name="pb_reservar_restaurante">
         <property name="styleSheet">
          <string notr="true">font: 10pt &quot;Times New Roman&quot;;</string>
         </property>
@@ -139,7 +139,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_6">
+       <widget class="QPushButton" name="pb_reservar_zona_entretenimiento">
         <property name="styleSheet">
          <string notr="true">font: 10pt &quot;Times New Roman&quot;;</string>
         </property>

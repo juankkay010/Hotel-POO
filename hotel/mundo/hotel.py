@@ -106,3 +106,19 @@ class Hotel:
                 raise ObjetoExistente(f"Ya existe una reserva con la cédula {cedula}", cedula)
         else:
             raise ObjetoNoEncontrado(f"No existe una reserva con la cédula {cedula}", cedula)
+
+    def buscar_reserva_zona_entretenimiento(self, cedula) -> Optional[Reserva]:
+        if cedula in self.zonas_entretenimiento.keys():
+            return self.zonas_entretenimiento[cedula]
+        else:
+            return None
+
+    def reservar_zona_entretenimiento(self, cedula: str, hora_reserva: str, cantidad_personas: int, zona_entretenimiento: str):
+        if self.buscar_reserva(cedula) is not None:
+            if self.buscar_reserva_zona_entretenimiento(cedula) is None:
+                reserva_zona_entretenimiento: tuple = (Reserva(cedula, cantidad_personas, hora_reserva), zona_entretenimiento)
+                self.zonas_entretenimiento[cedula] = reserva_zona_entretenimiento
+            else:
+                raise ObjetoExistente(f"Ya existe una reserva con la cédula {cedula}", cedula)
+        else:
+            raise ObjetoNoEncontrado(f"No existe una reserva con la cédula {cedula}", cedula)
