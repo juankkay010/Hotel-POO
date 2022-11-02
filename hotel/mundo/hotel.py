@@ -185,7 +185,7 @@ class Hotel:
         else:
             raise ObjetoNoEncontrado(f"No existe una reserva con la cédula {cedula}", cedula)
 
-    def servicio_limpieza_cuarto(self, cedula:str, hora_reserva: str):
+    def servicio_limpieza_cuarto(self, cedula: str, hora_reserva: str):
         if self.buscar_reserva(cedula) is not None:
             reserva_servicio_limpieza = Servicio(cedula, hora_reserva, None, None)
             self.limpieza[cedula] = reserva_servicio_limpieza

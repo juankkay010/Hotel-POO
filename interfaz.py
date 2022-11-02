@@ -316,8 +316,8 @@ class MainWindowHotel(QMainWindow):
     def abrir_dialogo_limpieza_cuarto(self):
         resp = self.dialogo_limpieza_cuarto.exec_()
         if resp == QDialog.Accepted:
-            cedula = self.dialogo_lavanderia.le_cedula.text()
-            hora_reserva = self.dialogo_lavanderia.le_hora_reserva.text()
+            cedula = self.dialogo_limpieza_cuarto.le_cedula.text()
+            hora_reserva = self.dialogo_limpieza_cuarto.le_hora_reserva.text()
             try:
                 self.hotel.servicio_limpieza_cuarto(cedula, hora_reserva)
                 msg_box = QMessageBox(self)
