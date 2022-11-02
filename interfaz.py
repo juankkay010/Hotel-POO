@@ -644,8 +644,6 @@ class Sugerencias(QDialog):
             msg_box.exec_()
 
 
-
-
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     win = MainWindowHotel()
