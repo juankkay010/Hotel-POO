@@ -37,12 +37,10 @@ class Reserva:
 
 class Servicio:
 
-    def __init__(self, nombre: str, cedula: str, hora_servicio: str, cantidad_personas: int, cantidad_dias: Optional[int], datos_tarjeta_bancaria: Optional[str]):
-        self.nombre = nombre
+    def __init__(self, cedula: str, hora_servicio: str, cantidad_personas:  Optional[int], datos_tarjeta_bancaria: Optional[str]):
         self.cedula = cedula
         self.hora_servicio = hora_servicio
         self.cantidad_personas = cantidad_personas
-        self.cantidad_dias = cantidad_dias
         self.datos_tarjeta_bancaria = datos_tarjeta_bancaria
 
 
@@ -58,6 +56,9 @@ class Hotel:
         self.turismo = {}
         self.alquiler = {}
         self.belleza = {}
+        self.lavanderia = {}
+        self.limpieza = {}
+        self.sugerencias = []
 
     def buscar_usuario(self, cedula) -> Optional[Usuario]:
         if cedula in self.usuario.keys():
@@ -122,3 +123,75 @@ class Hotel:
                 raise ObjetoExistente(f"Ya existe una reserva con la cédula {cedula}", cedula)
         else:
             raise ObjetoNoEncontrado(f"No existe una reserva con la cédula {cedula}", cedula)
+
+    def buscar_reserva_turismo(self, cedula) -> Optional[Servicio]:
+        if cedula in self.turismo.keys():
+            return self.turismo[cedula]
+        else:
+            return None
+
+    def reserva_servicio_turismo(self, cedula: str, hora_reserva: str, cantidad_personas: int, datos_tarjeta_bancaria: Optional[str], lugar_turismo: str):
+        if self.buscar_reserva(cedula) is not None:
+            if self.buscar_reserva_turismo(cedula) is None:
+                reserva_turismo: tuple = (Servicio(cedula, hora_reserva, cantidad_personas, datos_tarjeta_bancaria), lugar_turismo)
+                self.turismo[cedula] = reserva_turismo
+            else:
+                raise ObjetoExistente(f"Ya existe una reserva con la cédula {cedula}", cedula)
+        else:
+            raise ObjetoNoEncontrado(f"No existe una reserva con la cédula {cedula}", cedula)
+
+    def buscar_alquiler_vehiculo(self, cedula) -> Optional[Servicio]:
+        if cedula in self.alquiler.keys():
+            return self.alquiler[cedula]
+        else:
+            return None
+
+    def reserva_vehiculo(self, cedula: str, hora_reserva: str, cantidad_personas: int, datos_tarjeta_bancaria: Optional[str], tipo_vehiculo: str):
+        if self.buscar_reserva(cedula) is not None:
+            if self.buscar_alquiler_vehiculo(cedula) is None:
+                reserva_vehiculo: tuple = (Servicio(cedula, hora_reserva, cantidad_personas, datos_tarjeta_bancaria), tipo_vehiculo)
+                self.alquiler[cedula] = reserva_vehiculo
+            else:
+                raise ObjetoExistente(f"Ya existe una reserva con la cédula {cedula}", cedula)
+        else:
+            raise ObjetoNoEncontrado(f"No existe una reserva con la cédula {cedula}", cedula)
+
+    def buscar_reserva_salon_belleza(self, cedula) -> Optional[Servicio]:
+        if cedula in self.belleza.keys():
+            return self.belleza[cedula]
+        else:
+            return None
+
+    def reserva_servicio_salon_belleza(self, cedula: str, hora_reserva: str, cantidad_personas: int, datos_bancarios: str):
+        if self.buscar_reserva(cedula) is not None:
+            if self.buscar_reserva_salon_belleza(cedula) is None:
+                reserva_salon_belleza = Servicio(cedula, hora_reserva, cantidad_personas, datos_bancarios)
+                self.belleza[cedula] = reserva_salon_belleza
+            else:
+                raise ObjetoExistente(f"Ya existe una reserva con la cédula {cedula}", cedula)
+        else:
+            raise ObjetoNoEncontrado(f"No existe una reserva con la cédula {cedula}", cedula)
+
+    def reserva_servicio_lavanderia(self, cedula: str, hora_reserva: str):
+        if self.buscar_reserva(cedula) is not None:
+            reserva_servicio_lavanderia = Servicio(cedula, hora_reserva, None, None)
+            self.lavanderia[cedula] = reserva_servicio_lavanderia
+        else:
+            raise ObjetoNoEncontrado(f"No existe una reserva con la cédula {cedula}", cedula)
+
+    def servicio_check_out(self, cedula: str):
+        if self.buscar_reserva(cedula) is not None:
+            del self.checkin[cedula]
+        else:
+            raise ObjetoNoEncontrado(f"No existe una reserva con la cédula {cedula}", cedula)
+
+    def servicio_limpieza_cuarto(self, cedula:str, hora_reserva: str):
+        if self.buscar_reserva(cedula) is not None:
+            reserva_servicio_limpieza = Servicio(cedula, hora_reserva, None, None)
+            self.limpieza[cedula] = reserva_servicio_limpieza
+        else:
+            raise ObjetoNoEncontrado(f"No existe una reserva con la cédula {cedula}", cedula)
+
+    def escribir_sugerencias(self, mensaje):
+        self.sugerencias.append(mensaje)
+

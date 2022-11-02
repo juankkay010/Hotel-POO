@@ -1,7 +1,7 @@
 import sys
 
 from PyQt5.QtCore import QRegExp
-from PyQt5.QtGui import QRegExpValidator
+from PyQt5.QtGui import QRegExpValidator, QStandardItemModel, QStandardItem
 from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog, QMessageBox
 from PyQt5 import uic
 
@@ -19,6 +19,13 @@ class MainWindowHotel(QMainWindow):
         self.dialogo_cancelar_reserva = DialogoCancelarReserva()
         self.dialogo_reservar_restaurante = DialogoReservarRestaurante()
         self.dialogo_reservar_zona_entretenimiento = DialogoReservarZonaEntretenimiento()
+        self.dialogo_servicio_turismo = DialogoServicioTurismo()
+        self.dialogo_alquiler_vehiculo = DialogoAlquilerVehiculos()
+        self.dialogo_salon_belleza = DialogoSalonDeBelleza()
+        self.dialogo_lavanderia = DialogoLavanderia()
+        self.dialogo_check_out = DialogoCheckOut()
+        self.dialogo_limpieza_cuarto = DialogoLimpiezaCuarto()
+        self.dialogo_sugerencia = Sugerencias()
         self.hotel = Hotel()
         self.__configurar()
 
@@ -29,6 +36,13 @@ class MainWindowHotel(QMainWindow):
         self.pb_cancelar_reserva.clicked.connect(self.abrir_dialogo_cancelar_reserva)
         self.pb_reservar_restaurante.clicked.connect(self.abrir_dialogo_reservar_restaurante)
         self.pb_reservar_zona_entretenimiento.clicked.connect(self.abrir_dialogo_reservar_zona_entretenimiento)
+        self.pb_servicio_turismo.clicked.connect(self.abrir_dialogo_servicio_turismo)
+        self.pb_alquiler_vehiculo.clicked.connect(self.abrir_dialogo_alquiler_vehiculo)
+        self.pb_salon_belleza.clicked.connect(self.abrir_dialogo_salon_belleza)
+        self.pb_servicio_lavanderia.clicked.connect(self.abrir_dialogo_lavanderia)
+        self.pb_servicio_check_out.clicked.connect(self.abrir_dialogo_check_out)
+        self.pb_limpieza_de_cuarto.clicked.connect(self.abrir_dialogo_limpieza_cuarto)
+        self.pb_sugerencias.clicked.connect(self.abrir_dialogo_sugerencias)
 
     def abrir_dialogo_realizar_reserva(self):
         resp = self.dialogo_realizar_reserva.exec_()
@@ -154,6 +168,193 @@ class MainWindowHotel(QMainWindow):
                 msg_box.exec_()
         self.dialogo_reservar_zona_entretenimiento.limpiar()
 
+    def abrir_dialogo_servicio_turismo(self):
+        resp = self.dialogo_servicio_turismo.exec_()
+        if resp == QDialog.Accepted:
+            cedula = self.dialogo_servicio_turismo.le_cedula.text()
+            hora_reserva = self.dialogo_servicio_turismo.le_hora_reserva.text()
+            cantidad_personas = int(self.dialogo_servicio_turismo.le_cantidad_personas.text())
+            datos_bancarios = self.dialogo_servicio_turismo.le_datos_bancarios.text()
+            lugar_turismo = self.dialogo_servicio_turismo.le_lugar_turismo.text()
+            try:
+                self.hotel.reserva_servicio_turismo(cedula, hora_reserva, cantidad_personas, datos_bancarios, lugar_turismo)
+                msg_box = QMessageBox(self)
+                msg_box.setWindowTitle("Reserva exitosa")
+                msg_box.setText(
+                    f"Se ha reservado el servicio de turismo {lugar_turismo} a las {hora_reserva} exitosamente")
+                msg_box.setStandardButtons(QMessageBox.Ok)
+                msg_box.exec_()
+            except ObjetoExistente as err:
+                msg_box = QMessageBox(self)
+                msg_box.setWindowTitle("Error")
+                msg_box.setIcon(QMessageBox.Warning)
+                msg_box.setText(err.mensaje)
+                msg_box.setStandardButtons(QMessageBox.Ok)
+                msg_box.exec_()
+            except ObjetoNoEncontrado as err:
+                msg_box = QMessageBox(self)
+                msg_box.setWindowTitle("Error")
+                msg_box.setIcon(QMessageBox.Warning)
+                msg_box.setText(err.mensaje)
+                msg_box.setStandardButtons(QMessageBox.Ok)
+                msg_box.exec_()
+        self.dialogo_servicio_turismo.limpiar()
+
+    def abrir_dialogo_alquiler_vehiculo(self):
+        resp = self.dialogo_alquiler_vehiculo.exec_()
+        if resp == QDialog.Accepted:
+            cedula = self.dialogo_alquiler_vehiculo.le_cedula.text()
+            hora_reserva = self.dialogo_alquiler_vehiculo.le_hora_reserva.text()
+            cantidad_personas = self.dialogo_alquiler_vehiculo.le_cantidad_personas.text()
+            datos_bancarios = self.dialogo_alquiler_vehiculo.le_datos_bancarios.text()
+            tipo_vehiculo = self.dialogo_alquiler_vehiculo.le_tipo_vehiculo.text()
+            try:
+                self.hotel.reserva_vehiculo(cedula, hora_reserva, cantidad_personas, datos_bancarios, tipo_vehiculo)
+                msg_box = QMessageBox(self)
+                msg_box.setWindowTitle("Reserva exitosa")
+                msg_box.setText(
+                    f"Se ha reservado el vehículo {tipo_vehiculo} a las {hora_reserva} exitosamente")
+                msg_box.setStandardButtons(QMessageBox.Ok)
+                msg_box.exec_()
+            except ObjetoExistente as err:
+                msg_box = QMessageBox(self)
+                msg_box.setWindowTitle("Error")
+                msg_box.setIcon(QMessageBox.Warning)
+                msg_box.setText(err.mensaje)
+                msg_box.setStandardButtons(QMessageBox.Ok)
+                msg_box.exec_()
+            except ObjetoNoEncontrado as err:
+                msg_box = QMessageBox(self)
+                msg_box.setWindowTitle("Error")
+                msg_box.setIcon(QMessageBox.Warning)
+                msg_box.setText(err.mensaje)
+                msg_box.setStandardButtons(QMessageBox.Ok)
+                msg_box.exec_()
+        self.dialogo_alquiler_vehiculo.limpiar()
+
+    def abrir_dialogo_salon_belleza(self):
+        resp = self.dialogo_salon_belleza.exec_()
+        if resp == QDialog.Accepted:
+            cedula = self.dialogo_salon_belleza.le_cedula.text()
+            hora_reserva = self.dialogo_salon_belleza.le_hora_reserva.text()
+            cantidad_personas = self.dialogo_salon_belleza.le_cantidad_personas.text()
+            datos_bancarios = self.dialogo_salon_belleza.le_datos_bancarios.text()
+            try:
+                self.hotel.reserva_servicio_salon_belleza(cedula, hora_reserva, cantidad_personas, datos_bancarios)
+                msg_box = QMessageBox(self)
+                msg_box.setWindowTitle("Reserva exitosa")
+                msg_box.setText(
+                    f"Se ha he reservado la cita a las {hora_reserva} exitosamente")
+                msg_box.setStandardButtons(QMessageBox.Ok)
+                msg_box.exec_()
+            except ObjetoExistente as err:
+                msg_box = QMessageBox(self)
+                msg_box.setWindowTitle("Error")
+                msg_box.setIcon(QMessageBox.Warning)
+                msg_box.setText(err.mensaje)
+                msg_box.setStandardButtons(QMessageBox.Ok)
+                msg_box.exec_()
+            except ObjetoNoEncontrado as err:
+                msg_box = QMessageBox(self)
+                msg_box.setWindowTitle("Error")
+                msg_box.setIcon(QMessageBox.Warning)
+                msg_box.setText(err.mensaje)
+                msg_box.setStandardButtons(QMessageBox.Ok)
+                msg_box.exec_()
+        self.dialogo_salon_belleza.limpiar()
+
+    def abrir_dialogo_lavanderia(self):
+        resp = self.dialogo_lavanderia.exec_()
+        if resp == QDialog.Accepted:
+            cedula = self.dialogo_lavanderia.le_cedula.text()
+            hora_reserva = self.dialogo_lavanderia.le_hora_reserva.text()
+            try:
+                self.hotel.reserva_servicio_lavanderia(cedula, hora_reserva)
+                msg_box = QMessageBox(self)
+                msg_box.setWindowTitle("Reserva exitosa")
+                msg_box.setText(
+                    f"Se ha he reservado la lavanderia a las {hora_reserva} exitosamente")
+                msg_box.setStandardButtons(QMessageBox.Ok)
+                msg_box.exec_()
+            except ObjetoExistente as err:
+                msg_box = QMessageBox(self)
+                msg_box.setWindowTitle("Error")
+                msg_box.setIcon(QMessageBox.Warning)
+                msg_box.setText(err.mensaje)
+                msg_box.setStandardButtons(QMessageBox.Ok)
+                msg_box.exec_()
+            except ObjetoNoEncontrado as err:
+                msg_box = QMessageBox(self)
+                msg_box.setWindowTitle("Error")
+                msg_box.setIcon(QMessageBox.Warning)
+                msg_box.setText(err.mensaje)
+                msg_box.setStandardButtons(QMessageBox.Ok)
+                msg_box.exec_()
+        self.dialogo_lavanderia.limpiar()
+
+    def abrir_dialogo_check_out(self):
+        resp = self.dialogo_check_out.exec_()
+        if resp == QDialog.Accepted:
+            cedula = self.dialogo_check_out.le_cedula.text()
+            try:
+                self.hotel.servicio_check_out(cedula)
+                msg_box = QMessageBox(self)
+                msg_box.setWindowTitle("Reserva finalizada")
+                msg_box.setText(
+                    f"Se ha finalizado su estadía con exito, esperamos que vuelva pronto. Suerte")
+                msg_box.setStandardButtons(QMessageBox.Ok)
+                msg_box.exec_()
+            except ObjetoNoEncontrado as err:
+                msg_box = QMessageBox(self)
+                msg_box.setWindowTitle("Error")
+                msg_box.setIcon(QMessageBox.Warning)
+                msg_box.setText(err.mensaje)
+                msg_box.setStandardButtons(QMessageBox.Ok)
+                msg_box.exec_()
+        self.dialogo_check_out.limpiar()
+
+    def abrir_dialogo_limpieza_cuarto(self):
+        resp = self.dialogo_limpieza_cuarto.exec_()
+        if resp == QDialog.Accepted:
+            cedula = self.dialogo_lavanderia.le_cedula.text()
+            hora_reserva = self.dialogo_lavanderia.le_hora_reserva.text()
+            try:
+                self.hotel.servicio_limpieza_cuarto(cedula, hora_reserva)
+                msg_box = QMessageBox(self)
+                msg_box.setWindowTitle("Reserva exitosa")
+                msg_box.setText(
+                    f"Se ha agendado una limpieza al cuarto a las {hora_reserva} exitosamente")
+                msg_box.setStandardButtons(QMessageBox.Ok)
+                msg_box.exec_()
+            except ObjetoExistente as err:
+                msg_box = QMessageBox(self)
+                msg_box.setWindowTitle("Error")
+                msg_box.setIcon(QMessageBox.Warning)
+                msg_box.setText(err.mensaje)
+                msg_box.setStandardButtons(QMessageBox.Ok)
+                msg_box.exec_()
+            except ObjetoNoEncontrado as err:
+                msg_box = QMessageBox(self)
+                msg_box.setWindowTitle("Error")
+                msg_box.setIcon(QMessageBox.Warning)
+                msg_box.setText(err.mensaje)
+                msg_box.setStandardButtons(QMessageBox.Ok)
+                msg_box.exec_()
+        self.dialogo_limpieza_cuarto.limpiar()
+
+    def abrir_dialogo_sugerencias(self):
+        resp = self.dialogo_sugerencia.exec_()
+        if resp == QDialog.Accepted:
+            mensaje = self.dialogo_sugerencia.le_sugerencia.text()
+            self.hotel.escribir_sugerencias(mensaje)
+            msg_box = QMessageBox(self)
+            msg_box.setWindowTitle("Sugerencia exitosa")
+            msg_box.setText(
+                f"Gracias por escribir tu sugerencia, la tendremos en cuenta para mejorar")
+            msg_box.setStandardButtons(QMessageBox.Ok)
+            msg_box.exec_()
+        self.dialogo_sugerencia.limpiar()
+
 
 class DialogoRealizarReserva(QDialog):
 
@@ -235,7 +436,7 @@ class DialogoCancelarReserva(QDialog):
 class DialogoReservarRestaurante(QDialog):
     def __init__(self):
         QDialog.__init__(self)
-        uic.loadUi("gui/ReservarRestaurante.ui", self)
+        uic.loadUi("gui/DialogoReservarRestaurante.ui", self)
         self.setFixedSize(self.size())
 
     def limpiar(self):
@@ -258,7 +459,7 @@ class DialogoReservarRestaurante(QDialog):
 class DialogoReservarZonaEntretenimiento(QDialog):
     def __init__(self):
         QDialog.__init__(self)
-        uic.loadUi("gui/ReservarZonaEntretenimiento.ui", self)
+        uic.loadUi("gui/DialogoReservarZonaEntretenimiento.ui", self)
         self.setFixedSize(self.size())
 
     def limpiar(self):
@@ -278,6 +479,171 @@ class DialogoReservarZonaEntretenimiento(QDialog):
             msg_box.setText("Debe ingresar todos los campos")
             msg_box.setStandardButtons(QMessageBox.Ok)
             msg_box.exec_()
+
+
+class DialogoServicioTurismo(QDialog):
+    def __init__(self):
+        QDialog.__init__(self)
+        uic.loadUi("gui/DialogoServicioTurismo.ui", self)
+        self.setFixedSize(self.size())
+
+    def limpiar(self):
+        self.le_cedula.clear()
+        self.le_hora_reserva.clear()
+        self.le_cantidad_personas.clear()
+        self.le_datos_bancarios.clear()
+        self.le_lugar_turismo.clear()
+
+    def accept(self) -> None:
+        if self.le_cedula.text() != "" and self.le_hora_reserva.text() != "" and self.le_cantidad_personas != "" and\
+                self.le_datos_bancarios.text() != "":
+            super(DialogoServicioTurismo, self).accept()
+        else:
+            msg_box = QMessageBox(self)
+            msg_box.setWindowTitle("Error")
+            msg_box.setIcon(QMessageBox.Critical)
+            msg_box.setText("Debe ingresar todos los campos")
+            msg_box.setStandardButtons(QMessageBox.Ok)
+            msg_box.exec_()
+
+
+class DialogoAlquilerVehiculos(QDialog):
+    def __init__(self):
+        QDialog.__init__(self)
+        uic.loadUi("gui/DialogoAlquilerVehiculo.ui", self)
+        self.setFixedSize(self.size())
+
+    def limpiar(self):
+        self.le_cedula.clear()
+        self.le_hora_reserva.clear()
+        self.le_cantidad_personas.clear()
+        self.le_datos_bancarios.clear()
+        self.le_tipo_vehiculo.clear()
+
+    def accept(self) -> None:
+        if self.le_cedula.text() != "" and self.le_hora_reserva.text() != "" and self.le_cantidad_personas != "" and\
+                self.le_datos_bancarios.text() != "" and self.le_tipo_vehiculo.text() != "":
+            super(DialogoAlquilerVehiculos, self).accept()
+        else:
+            msg_box = QMessageBox(self)
+            msg_box.setWindowTitle("Error")
+            msg_box.setIcon(QMessageBox.Critical)
+            msg_box.setText("Debe ingresar todos los campos")
+            msg_box.setStandardButtons(QMessageBox.Ok)
+            msg_box.exec_()
+
+
+class DialogoSalonDeBelleza(QDialog):
+    def __init__(self):
+        QDialog.__init__(self)
+        uic.loadUi("gui/DialogoSalonDeBelleza.ui", self)
+        self.setFixedSize(self.size())
+
+    def limpiar(self):
+        self.le_cedula.clear()
+        self.le_hora_reserva.clear()
+        self.le_cantidad_personas.clear()
+        self.le_datos_bancarios.clear()
+
+    def accept(self) -> None:
+        if self.le_cedula.text() != "" and self.le_hora_reserva.text() != "" and self.le_cantidad_personas != "" and\
+                self.le_datos_bancarios.text() != "":
+            super(DialogoSalonDeBelleza, self).accept()
+        else:
+            msg_box = QMessageBox(self)
+            msg_box.setWindowTitle("Error")
+            msg_box.setIcon(QMessageBox.Critical)
+            msg_box.setText("Debe ingresar todos los campos")
+            msg_box.setStandardButtons(QMessageBox.Ok)
+            msg_box.exec_()
+
+
+class DialogoLavanderia(QDialog):
+    def __init__(self):
+        QDialog.__init__(self)
+        uic.loadUi("gui/DialogoLavanderia.ui", self)
+        self.setFixedSize(self.size())
+
+    def limpiar(self):
+        self.le_cedula.clear()
+        self.le_hora_reserva.clear()
+
+    def accept(self) -> None:
+        if self.le_cedula.text() != "" and self.le_hora_reserva != "":
+            super(DialogoLavanderia, self).accept()
+        else:
+            msg_box = QMessageBox(self)
+            msg_box.setWindowTitle("Error")
+            msg_box.setIcon(QMessageBox.Critical)
+            msg_box.setText("Debe ingresar todos los campos")
+            msg_box.setStandardButtons(QMessageBox.Ok)
+            msg_box.exec_()
+
+
+class DialogoCheckOut(QDialog):
+    def __init__(self):
+        QDialog.__init__(self)
+        uic.loadUi("gui/DialogoCheckOut.ui", self)
+        self.setFixedSize(self.size())
+
+    def limpiar(self):
+        self.le_cedula.clear()
+
+    def accept(self) -> None:
+        if self.le_cedula.text() != "":
+            super(DialogoCheckOut, self).accept()
+        else:
+            msg_box = QMessageBox(self)
+            msg_box.setWindowTitle("Error")
+            msg_box.setIcon(QMessageBox.Critical)
+            msg_box.setText("Debe ingresar todos los campos")
+            msg_box.setStandardButtons(QMessageBox.Ok)
+            msg_box.exec_()
+
+
+class DialogoLimpiezaCuarto(QDialog):
+    def __init__(self):
+        QDialog.__init__(self)
+        uic.loadUi("gui/DialogoLimpiezaCuarto.ui", self)
+        self.setFixedSize(self.size())
+
+    def limpiar(self):
+        self.le_cedula.clear()
+        self.le_hora_reserva.clear()
+
+    def accept(self) -> None:
+        if self.le_cedula.text() != "" and self.le_hora_reserva != "":
+            super(DialogoLimpiezaCuarto, self).accept()
+        else:
+            msg_box = QMessageBox(self)
+            msg_box.setWindowTitle("Error")
+            msg_box.setIcon(QMessageBox.Critical)
+            msg_box.setText("Debe ingresar todos los campos")
+            msg_box.setStandardButtons(QMessageBox.Ok)
+            msg_box.exec_()
+
+
+class Sugerencias(QDialog):
+    def __init__(self):
+        QDialog.__init__(self)
+        uic.loadUi("gui/DialogoSugerencias.ui", self)
+        self.setFixedSize(self.size())
+
+    def limpiar(self):
+        self.le_sugerencia.clear()
+
+    def accept(self) -> None:
+        if self.le_sugerencia.text() != "":
+            super(Sugerencias, self).accept()
+        else:
+            msg_box = QMessageBox(self)
+            msg_box.setWindowTitle("Error")
+            msg_box.setIcon(QMessageBox.Critical)
+            msg_box.setText("Debe ingresar todos los campos")
+            msg_box.setStandardButtons(QMessageBox.Ok)
+            msg_box.exec_()
+
+
 
 
 if __name__ == "__main__":

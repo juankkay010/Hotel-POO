@@ -48,7 +48,7 @@
     <string notr="true">font: 10pt &quot;Times New Roman&quot;;</string>
    </property>
    <property name="text">
-    <string>Rellene los datos siguientes:</string>
+    <string>Para registrarse, rellene los datos siguientes:</string>
    </property>
   </widget>
   <widget class="QWidget" name="formLayoutWidget">

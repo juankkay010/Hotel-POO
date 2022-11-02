@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>813</width>
-    <height>524</height>
+    <height>469</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -149,7 +149,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_3">
+       <widget class="QPushButton" name="pb_servicio_turismo">
         <property name="styleSheet">
          <string notr="true">font: 10pt &quot;Times New Roman&quot;;</string>
         </property>
@@ -190,7 +190,7 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <widget class="QPushButton" name="pushButton_13">
+       <widget class="QPushButton" name="pb_alquiler_vehiculo">
         <property name="styleSheet">
          <string notr="true">font: 10pt &quot;Times New Roman&quot;;</string>
         </property>
@@ -200,7 +200,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_15">
+       <widget class="QPushButton" name="pb_salon_belleza">
         <property name="styleSheet">
          <string notr="true">font: 10pt &quot;Times New Roman&quot;;</string>
         </property>
@@ -210,7 +210,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_16">
+       <widget class="QPushButton" name="pb_servicio_lavanderia">
         <property name="styleSheet">
          <string notr="true">font: 10pt &quot;Times New Roman&quot;;</string>
         </property>
@@ -220,7 +220,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_14">
+       <widget class="QPushButton" name="pb_servicio_check_out">
         <property name="styleSheet">
          <string notr="true">font: 10pt &quot;Times New Roman&quot;;</string>
         </property>
@@ -230,7 +230,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_17">
+       <widget class="QPushButton" name="pb_limpieza_de_cuarto">
         <property name="styleSheet">
          <string notr="true">font: 10pt &quot;Times New Roman&quot;;</string>
         </property>
@@ -240,7 +240,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_18">
+       <widget class="QPushButton" name="pb_sugerencias">
         <property name="styleSheet">
          <string notr="true">font: 10pt &quot;Times New Roman&quot;;</string>
         </property>
